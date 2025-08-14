@@ -5,13 +5,11 @@ import prisma from "../db/index.js";
 // GET all games for logged-in user
 router.get('/', async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ success: false, message: 'Unauthorized' });
-    }
+    // if (!req.user) {
+    //   return res.status(401).json({ success: false, message: 'Unauthorized' });
+    // }
 
-    const games = await prisma.game.findMany({
-      where: { userId: req.user.sub },
-    });
+    const games = await prisma.game.findMany();
 
     res.status(200).json({ success: true, games });
   } catch (e) {
