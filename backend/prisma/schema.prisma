@@ -12,7 +12,6 @@ model User {
   id        String   @id @default(uuid())
   email     String   @unique
   name      String?
-  games     Game[]   // One user has many games
   createdAt DateTime @default(now())
 }
 
@@ -20,11 +19,6 @@ model Game {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
-  completed   Boolean  @default(false)
-  estimatedHours Int?
-  playedHours Int      @default(0)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
