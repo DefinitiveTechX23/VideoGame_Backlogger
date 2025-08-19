@@ -1,20 +1,54 @@
-import React from "react";
+
+
+import { Link } from "react-router-dom"
+
 export default function About() {
   return (
-    <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow mt-8">
-      <h1 className="text-3xl font-bold mb-4 text-blue-700">About Backlog Boss</h1>
-      <p className="mb-4 text-gray-700">
-        Team Name: <span className="font-semibold">Pixel Pioneers</span>
-      </p>
-      <p className="mb-4 text-gray-700">
-        We conceptualized Backlog Boss after realizing our gaming libraries were growing faster than we could play.
-        Between Steam sales, console exclusives, and indie bundles, our “to-play” lists became overwhelming.
-      </p>
-      <p className="mb-4 text-gray-700">
-        Our solution is a tool that organizes your backlog, tracks your play sessions, and keeps you motivated with
-        progress tracking and estimated completion times. Whether you want to beat every RPG you own or finally finish
-        that one platformer, Backlog Boss makes it possible.
-      </p>
+    <div className="h-screen w-screen bg-black text-white font-mono overflow-y-auto relative">
+      <div className="absolute inset-0 opacity-10">
+        <div className="grid grid-cols-12 grid-rows-12 h-full w-full">
+          {Array.from({ length: 144 }).map((_, i) => (
+            <div key={i} className="border border-lime-400/30" />
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 p-8">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-lime-400 mb-4 tracking-wider">ABOUT SYSTEM</h1>
+          <div className="text-cyan-400 text-lg">▼ MISSION BRIEFING ▼</div>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="border-2 border-lime-400 bg-black/50 p-6">
+            <h2 className="text-cyan-400 text-2xl font-bold mb-4">OBJECTIVE</h2>
+            <p className="text-white text-lg leading-relaxed">
+              Track, organize, and conquer your gaming backlog with retro-futuristic precision. This system helps gamers
+              manage their collection, track progress, and discover new adventures.
+            </p>
+          </div>
+
+          <div className="border-2 border-cyan-500 bg-black/50 p-6">
+            <h2 className="text-lime-400 text-2xl font-bold mb-4">FEATURES</h2>
+            <ul className="text-white text-lg space-y-2">
+              <li>• Game collection management</li>
+              <li>• Progress tracking system</li>
+              <li>• Wishlist organization</li>
+              <li>• Achievement monitoring</li>
+              <li>• Time played analytics</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="max-w-md mx-auto mt-12">
+          <Link to="/" className="block">
+            <div className="p-4 border-2 border-cyan-500 bg-black/50 hover:bg-cyan-500/20 transition-all duration-300 text-center">
+              <div className="text-lime-400 text-sm mb-1">←</div>
+              <div className="text-white text-lg font-bold">RETURN TO MAIN</div>
+            </div>
+          </Link>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
