@@ -5,26 +5,44 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")  // keep this if you use directUrl env var, else remove this line
+  directUrl = env("DIRECT_URL")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  games     Game[]   // One user has many games
-  createdAt DateTime @default(now())
+
+model UserProfile {
+id Int @id @default(autoincrement())
+username String @unique
+progress UserGameProgress[]
 }
 
 model Game {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?
-  completed   Boolean  @default(false)
-  estimatedHours Int?
-  playedHours Int      @default(0)
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+id Int @id @default(autoincrement())
+name String
+averageHoursToBeat Float?
+genre String?
+gameMilestones Milestone[]
+progress UserGameProgress[]
+}
+
+model Milestone {
+id Int @id @default(autoincrement())
+title String
+gameId Int
+game Game @relation(fields: [gameId], references: [id])
+progress UserGameProgress[]
+createdAt DateTime            @default(now())
+updatedAt DateTime            @updatedAt
+}
+
+model UserGameProgress {
+id Int @id @default(autoincrement())
+userId Int
+gameId Int
+milestoneId Int?
+
+user   UserProfile @relation(fields: [userId], references: [id])
+game   Game @relation(fields: [gameId], references: [id])
+milestone  Milestone? @relation(fields: [milestoneId], references: [id])
+createdAt   DateTime            @default(now())
+updatedAt   DateTime            @updatedAt
 }

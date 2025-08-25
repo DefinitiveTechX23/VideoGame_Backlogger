@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
 
 // POST create a new game
 router.post('/', async (req, res) => {
+  console.log(req.body)
   if (!req.body) {
     return res.status(400).json({ success: false, message: 'Request body is missing' });
   }
@@ -30,9 +31,9 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ success: false, message: 'Game name is required' });
   }
 
-  if (!req.user) {
-    return res.status(401).json({ success: false, message: 'Unauthorized' });
-  }
+  // if (!req.user) {
+  //   return res.status(401).json({ success: false, message: 'Unauthorized' });
+  // }
 
   try {
     const newGame = await prisma.game.create({
@@ -40,7 +41,7 @@ router.post('/', async (req, res) => {
         name,
         description,
         completed: false,
-        userId: req.user.sub,
+      
       },
     });
 

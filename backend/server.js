@@ -3,7 +3,7 @@ import cors from "cors";
 
 
 import gameRouter from "./routes/game.js";
-//   import verifyToken from "./middleware/verifyToken.js";  
+  // import verifyToken from "./middleware/verifyToken.js";  
 
 const app = express();
 const PORT = 8080;
