@@ -1,9 +1,6 @@
-
 "use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
-
 export default function Signup() {
   const [formData, setFormData] = useState({
     username: "",
@@ -11,19 +8,16 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
   })
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
-
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log("Signup submitted:", formData)
   }
-
   return (
     <div className="h-screen w-screen bg-black text-white font-mono overflow-y-auto relative">
       <div className="absolute inset-0 opacity-10">
@@ -33,17 +27,14 @@ export default function Signup() {
           ))}
         </div>
       </div>
-
       <div className="absolute inset-0 pointer-events-none">
         <div className="h-full w-full bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent bg-[length:100%_4px]" />
       </div>
-
       <div className="relative z-10 p-8">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-lime-400 mb-4 tracking-wider">USER REGISTRATION</h1>
           <div className="text-cyan-400 text-lg">▼ CREATE NEW ACCOUNT ▼</div>
         </div>
-
         <div className="max-w-2xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="border-2 border-lime-400 bg-black/50 p-6">
@@ -57,7 +48,6 @@ export default function Signup() {
                 placeholder="ENTER USERNAME..."
               />
             </div>
-
             <div className="border-2 border-lime-400 bg-black/50 p-6">
               <label className="block text-cyan-400 text-sm mb-2">EMAIL</label>
               <input
@@ -69,7 +59,6 @@ export default function Signup() {
                 placeholder="ENTER EMAIL..."
               />
             </div>
-
             <div className="border-2 border-lime-400 bg-black/50 p-6">
               <label className="block text-cyan-400 text-sm mb-2">PASSWORD</label>
               <input
@@ -81,7 +70,6 @@ export default function Signup() {
                 placeholder="ENTER PASSWORD..."
               />
             </div>
-
             <div className="border-2 border-lime-400 bg-black/50 p-6">
               <label className="block text-cyan-400 text-sm mb-2">CONFIRM PASSWORD</label>
               <input
@@ -93,7 +81,6 @@ export default function Signup() {
                 placeholder="CONFIRM PASSWORD..."
               />
             </div>
-
             <button
               type="submit"
               className="w-full p-4 border-2 border-cyan-500 bg-black hover:bg-cyan-500/20 text-white font-bold text-lg transition-all duration-300"
@@ -102,7 +89,6 @@ export default function Signup() {
             </button>
           </form>
         </div>
-
         <div className="max-w-md mx-auto mt-12">
           <Link to="/" className="block">
             <div className="p-4 border-2 border-lime-400 bg-black/50 hover:bg-lime-400/20 transition-all duration-300 text-center">
@@ -115,3 +101,5 @@ export default function Signup() {
     </div>
   )
 }
+  
+           

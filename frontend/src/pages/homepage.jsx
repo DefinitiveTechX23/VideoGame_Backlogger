@@ -1,31 +1,73 @@
+"use client";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+export default function HomePage() {
+  const [showLoadingPage, setShowLoadingPage] = useState(true);
 
-export default function Homepage() {
+  // Fetch games
+  const { data: rawData, isError } = useQuery({
+    queryKey: ["games"],
+    queryFn: async () => {
+      const res = await fetch("http://localhost:8080/api/games");
+      if (!res.ok) throw new Error("Failed to fetch games");
+      const data = await res.json();
+
+      // Artificial delay so the loading page is visible
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      return data;
+    },
+  });
+
+  // Hide loading page after data is ready
+  useEffect(() => {
+    if (rawData) setShowLoadingPage(false);
+  }, [rawData]);
+
+  // Normalize games
+  const games = Array.isArray(rawData)
+    ? rawData
+    : rawData?.games?.map((g) => ({
+        id: g.id,
+        title: g.title || g.name || "Unknown Game",
+        genre: g.genre || g.type || "Unknown Genre",
+        hoursToBeat: g.hoursToBeat ?? g.playtime ?? 0,
+        status: g.status || g.currentStatus || "Unknown",
+      })) ?? [];
+
+  if (showLoadingPage) {
+    // 👈 This is the “loading page”
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-black text-white font-mono">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-6xl text-cyan-400 font-bold mb-4">
+            Loading Games...
+          </h1>
+          <p className="text-cyan-300 text-lg">Please wait a moment</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Real page with games
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-100 to-blue-300 px-6 py-20">
-      <h1 className="text-6xl font-extrabold text-blue-800 mb-8 drop-shadow-lg">
-        Backlog Boss
+    <div className="h-screen w-screen bg-black text-white font-mono overflow-auto relative p-8">
+      <h1 className="text-4xl md:text-6xl text-cyan-400 font-bold mb-6">
+        GAME BACKLOG TRACKER
       </h1>
 
-      <p className="max-w-xl text-center text-gray-700 text-lg mb-12">
-        The ultimate video game backlog tracker for gamers who want to conquer their unplayed
-        library. Track progress, log playtime, and turn your backlog into a victory list.
-      </p>
-
-      <div className="flex flex-wrap justify-center gap-6">
-        <Link
-          to="/about"
-          className="bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition hover:bg-blue-800 hover:shadow-lg"
-        >
-          Learn More
-        </Link>
-        <Link
-          to="/auth"
-          className="bg-green-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition hover:bg-green-700 hover:shadow-lg"
-        >
-          Get Started
-        </Link>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {games.map((game) => (
+          <div
+            key={game.id}
+            className="border border-cyan-500 p-4 bg-black/70 rounded"
+          >
+            <h2 className="text-cyan-400 text-xl font-bold">{game.title}</h2>
+            <p className="text-lime-400 text-sm">{game.genre}</p>
+            <p className="text-white text-sm">⏱ {game.hoursToBeat} hrs</p>
+            <p className="text-white text-sm">📊 Status: {game.status}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
