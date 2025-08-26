@@ -1,30 +1,22 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
 
 export default function HomePage() {
-  const [showLoadingPage, setShowLoadingPage] = useState(true);
-
-  // Fetch games
-  const { data: rawData, isError } = useQuery({
+  // Fetch games with artificial delay
+  const { data: rawData, isLoading, isError } = useQuery({
     queryKey: ["games"],
     queryFn: async () => {
       const res = await fetch("http://localhost:8080/api/games");
       if (!res.ok) throw new Error("Failed to fetch games");
       const data = await res.json();
 
-      // Artificial delay so the loading page is visible
+      // Force at least 1.5s loading
       await new Promise((resolve) => setTimeout(resolve, 1500));
       return data;
     },
   });
 
-  // Hide loading page after data is ready
-  useEffect(() => {
-    if (rawData) setShowLoadingPage(false);
-  }, [rawData]);
-
-  // Normalize games
+  // Normalize data
   const games = Array.isArray(rawData)
     ? rawData
     : rawData?.games?.map((g) => ({
@@ -35,8 +27,8 @@ export default function HomePage() {
         status: g.status || g.currentStatus || "Unknown",
       })) ?? [];
 
-  if (showLoadingPage) {
-    // 👈 This is the “loading page”
+  // Full-screen loading
+  if (isLoading) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-black text-white font-mono">
         <div className="text-center">
@@ -49,9 +41,18 @@ export default function HomePage() {
     );
   }
 
-  // Real page with games
+  // Error state
+  if (isError) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-black text-red-500 font-mono">
+        <p>Error loading games. Please try again later.</p>
+      </div>
+    );
+  }
+
+  // Main page with games
   return (
-    <div className="h-screen w-screen bg-black text-white font-mono overflow-auto relative p-8">
+    <div className="h-screen w-screen bg-black text-white font-mono overflow-auto p-8">
       <h1 className="text-4xl md:text-6xl text-cyan-400 font-bold mb-6">
         GAME BACKLOG TRACKER
       </h1>
